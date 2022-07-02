@@ -1,8 +1,12 @@
 ## Title: |cffd700roFor|cff0000NOOB|r|r v1.0.|cff00006|r
 ## APIVersion: 101034
-## Author: @|cffd700dov118|r @|cffd700AngyW|r
+## Author: @|cffd700dov118|r @AngyW
 ## AddOnVersion: 1
 ## Version: 1.0.1
-## SavedVariables: roForNOOBSavedVariables
+## SavedVariables: roForNoobSavedVariables
+## DependsOn: LibAddonMenu-2.0 LibStub
+## Description: Addon for |cff0000noob|r healer applying |cffd700Roaring Opportunist|r
 
 roForNoob.lua
+roForNoobMenu.lua
+roForNoobUI.lua
