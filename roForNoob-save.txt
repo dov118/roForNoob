@@ -1,0 +1,9 @@
+## Title: |cffd700RO for NOOB|r
+## APIVersion: 101032
+## Author: @|cffd700dov118|r
+## AddOnVersion: 1
+## Version: 1.0.0
+## SavedVariables: RoForNoobSavedVariables
+
+roForNoob.lua
+roForNoob.xml
