@@ -18,8 +18,9 @@ function RoForNoob.UI.build()
   RoForNoob.UI.Timer:SetHidden(false)
   RoForNoob.UI.Timer:SetAnchor(CENTER, RoForNoob.UI.frame, CENTER)
   RoForNoob.UI.Timer:SetDimensions(RoForNoob.savedVariables.size, RoForNoob.savedVariables.size)
-  RoForNoob.UI.Timer:SetFont(string.format('%s|%d|%s', '$(MEDIUM_FONT)', math.floor((RoForNoob.savedVariables.size * 0.4)+0.5), 'soft-shadow-thick'))
-  RoForNoob.UI.Timer:SetText("test")
+  RoForNoob.UI.Timer:SetFont(string.format('%s|%d|%s', '$(MEDIUM_FONT)', math.floor((RoForNoob.savedVariables.size * 0.6)+0.5), 'soft-shadow-thick'))
+  RoForNoob.UI.Timer:SetText("0")
+  RoForNoob.UI.Timer:SetColor(RoForNoob.savedVariables["downColor"].r, RoForNoob.savedVariables["downColor"].g, RoForNoob.savedVariables["downColor"].b, 1)
 
   RoForNoob.UI.Icon = WINDOW_MANAGER:CreateControl("RoForNoobIcon", RoForNoob.UI.frame, CT_TEXTURE)
   RoForNoob.UI.Icon:SetTexture('/esoui/art/icons/ability_buff_major_slayer.dds')
@@ -52,6 +53,24 @@ end
 function RoForNoob.UI.updateSize(size)
   RoForNoob.UI.frame:SetDimensions(size, size)
   RoForNoob.UI.Timer:SetDimensions(size, size)
-  RoForNoob.UI.Timer:SetFont(string.format('%s|%d|%s', '$(MEDIUM_FONT)', math.floor((size * 0.4)+0.5), 'soft-shadow-thick'))
+  RoForNoob.UI.Timer:SetFont(string.format('%s|%d|%s', '$(MEDIUM_FONT)', math.floor((size * 0.6)+0.5), 'soft-shadow-thick'))
   RoForNoob.UI.Icon:SetDimensions(size, size)
+end
+
+function RoForNoob.UI.getTimerColor(value)
+  if value > 6.5 then
+    return "ureadyColor"
+  elseif value <= 6.5 and value > 1.5 then
+    return "almostReadyColor"
+  elseif value <= 1.5 and value > 0 then
+    return "readyColor"
+  elseif value <= 0 then
+    return "downColor"
+  end
+end
+
+function RoForNoob.UI.updateTimerValue(value)
+  local color = RoForNoob.savedVariables[RoForNoob.UI.getTimerColor(value)]
+  RoForNoob.UI.Timer:SetColor(color.r, color.g, color.b, 1)
+  RoForNoob.UI.Timer:SetText(value)
 end

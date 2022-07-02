@@ -9,34 +9,40 @@ RoForNoob = RoForNoob or {
 }
 local RoForNoob = RoForNoob
 
+local function OnCombatEvent(eventCode, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, log, sourceUnitId, targetUnitId, abilityId, overflow)
+  if abilityId == 93109 and result == 2240 then
+    updateTime(21);
+  end
+end
+
 function RoForNoob.OnAddOnLoaded(event, addonName)
   if addonName ~= RoForNoob.name then return end
 
   RoForNoob.savedVariables = ZO_SavedVars:NewAccountWide(RoForNoob.name .. "SavedVariables", 1, RoForNoob.name, {
     lockUI = false,
-    left = 100,
-    top = 100,
+    left = 500,
+    top = 500,
     downColor = {
-      r = 1,
+      r = 0.8117647171,
       g = 0,
-      b = 0,
+      b = 0.0588235296,
     },
     ureadyColor = {
       r = 1,
-      g = 0,
-      b = 1,
+      g = 0.7529411912,
+      b = 0.0235294122,
     },
     readyColor = {
       r = 0,
-      g = 1,
-      b = 0,
+      g = 0.6000000238,
+      b = 0.2627451122,
     },
     almostReadyColor = {
       r = 0,
-      g = 0,
+      g = 0.4784313738,
       b = 1,
     },
-    size = 100
+    size = 60
   })
 
   RoForNoob.Menu.build()
@@ -47,14 +53,32 @@ function RoForNoob.OnAddOnLoaded(event, addonName)
   EVENT_MANAGER:UnregisterForEvent(RoForNoob.name, EVENT_ADD_ON_LOADED)
 end
 
-function RoForNoob.onHeavyAttack()
-  d('heavy Attack')
+function RoForNoob.Listen()
+  EVENT_MANAGER:RegisterForEvent('UnitCombatEvent', EVENT_COMBAT_EVENT, OnCombatEvent)
 end
 
-function RoForNoob.Listen()
-  EVENT_MANAGER:RegisterForEvent(RoForNoob.name, EVENT_COMBAT_EVENT, RoForNoob.onHeavyAttack)
-  EVENT_MANAGER:AddFilterForEvent(RoForNoob.name, EVENT_COMBAT_EVENT, REGISTER_FILTER_ABILITY_ID, 93109)
-  EVENT_MANAGER:AddFilterForEvent(RoForNoob.name, EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, 2240)
+function updateTime(time)
+  local nextTime = time - 0.1
+
+  EVENT_MANAGER:RegisterForUpdate("updateTimeLoop", 100, function()
+    RoForNoob.UI.updateTimerValue(math.abs(math.floor((nextTime * 10^2) + 0.5) / (10^2)))
+  end)
+end
+
+function updateTime(time)
+  local nextTime = time - 0.1
+
+  EVENT_MANAGER:RegisterForUpdate("updateTimeLoop", 100, function()
+    if nextTime > 0 then
+      RoForNoob.UI.updateTimerValue(math.abs(math.floor((nextTime * 10^2) + 0.5) / (10^2)))
+      nextTime = nextTime - 0.1
+    end
+
+    if nextTime <= 0 then
+      RoForNoob.UI.updateTimerValue(0)
+      EVENT_MANAGER:UnregisterForUpdate("updateTimeLoop")
+    end
+  end)
 end
 
 -- * EVENT_ADD_ON_LOADED (*string* _addonName_)
